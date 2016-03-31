@@ -29,8 +29,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(cookieSession({
+  name: 'user',
   secret: process.env.LINKEDIN_CLIENT_SECRET
 }));
+
+// app.use(cookieSession({
+//   name: 'session',
+//   keys: ['key1', 'key2']
+// }))
 
 app.get('/auth/linkedin',
 passport.authenticate('linkedin'),
@@ -67,7 +73,7 @@ passport.deserializeUser(function(user, done) {
 app.use(function (req, res, next) {
   res.locals.user = req.session.passport.user
   next()
-})
+});
 
 app.use('/', routes);
 app.use('/users', users);
